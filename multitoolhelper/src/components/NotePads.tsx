@@ -55,13 +55,13 @@ export const NotePads = () => {
                     ))}
                     
                 </div>
-                <div className="w-8/12 mx-auto bg-gray-300 text-black p-4 rounded">
+                <div className="w-8/12 mx-auto  text-black p-4 rounded">
                     {showNewForm ? (
                         <div>
-                            <form onSubmit={handleNewPadChange} className="flex flex-col gap-2">
-                                <input type="text" className="w-full mb-2" placeholder="Title..." value={newPad.title} onChange={e => setNewPad({...newPad, title: e.target.value})} />
-                                <textarea className="w-full" placeholder="Content..." value={newPad.content} onChange={e => setNewPad({...newPad, content: e.target.value})} />
-                                <button >Create new notepad</button>
+                            <form onSubmit={handleNewPadChange} className="flex flex-col gap-6 bg-gray-100 p-4 rounded">
+                                <input type="text" className="w-full mb-2 active:border rounded  active:border-red-200 text-xl font-semibold" placeholder="Title..." value={newPad.title} onChange={e => setNewPad({...newPad, title: e.target.value})} />
+                                <textarea className="w-full h-20 rounded active:border-red-200 active:border" placeholder="Content..." value={newPad.content} onChange={e => setNewPad({...newPad, content: e.target.value})} />
+                                <button className="bg-green-600 rounded text-white font-semibold hover:bg-green-700 transition duration-200 cursor-pointer">Create new notepad</button>
                             </form>
                         </div>
                     ) : selectedPad ? (
