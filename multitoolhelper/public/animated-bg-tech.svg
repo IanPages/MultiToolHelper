@@ -1,0 +1,77 @@
+<svg width="100%" height="100%" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="bg-tech" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e0e7ef"/>
+    </linearGradient>
+    <linearGradient id="line1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0.10"/>
+    </linearGradient>
+    <linearGradient id="line2" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f472b6" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0.10"/>
+    </linearGradient>
+    <radialGradient id="circle1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="circle2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="circle3" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f472b6" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#f472b6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1440" height="900" fill="url(#bg-tech)"/>
+  <!-- Animated geometric lines -->
+  <g>
+    <polyline points="0,200 400,300 800,200 1200,300 1440,200" fill="none" stroke="url(#line1)" stroke-width="4">
+      <animate attributeName="points" dur="12s" repeatCount="indefinite"
+        values="0,200 400,300 800,200 1200,300 1440,200;
+                0,220 400,280 800,220 1200,280 1440,220;
+                0,200 400,300 800,200 1200,300 1440,200"/>
+    </polyline>
+    <polyline points="0,600 360,500 720,600 1080,500 1440,600" fill="none" stroke="url(#line2)" stroke-width="4">
+      <animate attributeName="points" dur="10s" repeatCount="indefinite"
+        values="0,600 360,500 720,600 1080,500 1440,600;
+                0,580 360,520 720,580 1080,520 1440,580;
+                0,600 360,500 720,600 1080,500 1440,600"/>
+    </polyline>
+    <polyline points="0,400 480,350 960,400 1440,350" fill="none" stroke="#cbd5e1" stroke-width="2" opacity="0.5">
+      <animate attributeName="points" dur="14s" repeatCount="indefinite"
+        values="0,400 480,350 960,400 1440,350;
+                0,420 480,330 960,420 1440,330;
+                0,400 480,350 960,400 1440,350"/>
+    </polyline>
+  </g>
+  <!-- Animated circles (tech nodes) -->
+  <circle cx="200" cy="150" r="60" fill="url(#circle1)">
+    <animate attributeName="r" values="60;80;60" dur="8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="1240" cy="180" r="40" fill="url(#circle2)">
+    <animate attributeName="cy" values="180;210;180" dur="10s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="700" cy="800" r="90" fill="url(#circle3)">
+    <animate attributeName="cx" values="700;750;700" dur="9s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Subtle grid pattern -->
+  <g opacity="0.08">
+    <rect x="0" y="0" width="1440" height="900" fill="none" stroke="#64748b" stroke-width="1"/>
+    <g>
+      <line x1="180" y1="0" x2="180" y2="900" stroke="#64748b" stroke-width="1"/>
+      <line x1="360" y1="0" x2="360" y2="900" stroke="#64748b" stroke-width="1"/>
+      <line x1="540" y1="0" x2="540" y2="900" stroke="#64748b" stroke-width="1"/>
+      <line x1="720" y1="0" x2="720" y2="900" stroke="#64748b" stroke-width="1"/>
+      <line x1="900" y1="0" x2="900" y2="900" stroke="#64748b" stroke-width="1"/>
+      <line x1="1080" y1="0" x2="1080" y2="900" stroke="#64748b" stroke-width="1"/>
+      <line x1="1260" y1="0" x2="1260" y2="900" stroke="#64748b" stroke-width="1"/>
+      <line x1="0" y1="180" x2="1440" y2="180" stroke="#64748b" stroke-width="1"/>
+      <line x1="0" y1="360" x2="1440" y2="360" stroke="#64748b" stroke-width="1"/>
+      <line x1="0" y1="540" x2="1440" y2="540" stroke="#64748b" stroke-width="1"/>
+      <line x1="0" y1="720" x2="1440" y2="720" stroke="#64748b" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

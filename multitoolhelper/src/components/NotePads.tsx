@@ -32,65 +32,94 @@ export const NotePads = () => {
         setNotePads([...notePads, notepad]);
     }
 
+    const updateNotePad = (notepad: Notepad) => {
+        notepad.updatedAt = new Date();
+        setNotePads(notePads.map(pad => pad.id === notepad.id ? notepad : pad));
+        setSelectedPad(notepad);
+    }
+
+    const deleteNotePad = (notePadId: number) => {
+        if (window.confirm("Are you sure you want to delete this notepad?")) {
+            setNotePads(notePads.filter(pad => pad.id !== notePadId));
+            setSelectedPad(null);
+            setShowNewForm(false);
+        }
+    }
+
 
 
 
     return (
-        <div className="p-4 bg-white shadow rounded-lg flex flex-col items-center  mx-auto">
+        <div className="p-6 bg-gradient-to-br from-gray-50 via-white to-gray-100 shadow-xl rounded-2xl flex flex-col items-center mx-auto border border-gray-200">
             <div className="w-full max-w-md mb-8 flex items-center justify-between">
-                <h1 className="text-2xl font-bold mb-0 flex items-center">NotePads</h1>
-                <button className="bg-green-600 rounded p-1 text-white font-semibold flex items-center h-8 cursor-pointer hover:bg-green-700 transition duration-200"
-                onClick={() => { setShowNewForm(true), setSelectedPad(null)}}>Create new notepad</button>         
+                <h1 className="text-3xl font-bold mb-0 flex items-center text-gray-800 tracking-tight">NotePads</h1>
+                <button className="bg-neutral-900 rounded-lg px-3 text-white font-semibold flex items-center h-9 cursor-pointer hover:bg-neutral-700 transition duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-neutral-400"
+                onClick={() => { setShowNewForm(true), setSelectedPad(null)}}>Create new notepad</button>
             </div>
-            <div className="w-full mb-4 mt-8 flex gap-2" >
-                <div className="w-4/12 mx-auto mb-4 flex flex-col gap-2 p-4">
-                    {notePads.map((notepad) => (
-                        <div key={notepad.id} className={`rounded bg-red-300 cursor-pointer ${selectedPad?.id === notepad.id ? "ring-2 ring-yellow-500" : ""}`}
+            <div className="grid grid-cols-1 w-full mb-4 mt-8 md:flex gap-4">
+                <div className="w-full md:w-4/12 mx-auto mb-4 flex flex-col gap-3 p-0">
+                    {notePads.length > 0 ? notePads.map((notepad) => (
+                        <div key={notepad.id}
+                        className={`flex flex-col my-2 bg-white/80 shadow border rounded-xl w-full hover:shadow-lg hover:scale-[1.03] transition duration-200 cursor-pointer ease-in-out ${selectedPad?.id === notepad.id ? "border-neutral-900 scale-[1.03] shadow-2xl bg-neutral-50" : "border-gray-200"}`}
                         onClick={() => {setSelectedPad(notepad), setShowNewForm(false)}}>
-                            <h2>{notepad.title}</h2>
-                            <p>{notepad.title.slice(0,20)}...</p>
-                            <p className="text-gray-500 text-sm">Created at: {new Date(notepad.createdAt).toLocaleDateString()}</p>
-                            <p className="text-gray-500 text-sm">Updated at: {new Date(notepad.updatedAt).toLocaleDateString()}</p>
+                            <div className="p-4">
+                                <h5 className="mb-2 text-neutral-900 text-lg font-semibold truncate">
+                                {notepad.title.slice(0, 25)}{notepad.title.length > 30 ? "..." : ""}
+                                </h5>
+                                <p className="text-gray-500 leading-normal font-light text-sm md:text-md truncate">
+                                    {notepad.content}
+                                </p>
+                            </div>
+                            <div className="grid grid-cols-1 gap-1 xl:grid-cols-2 mx-3 border-t border-gray-100 pb-3 pt-2 px-1">
+                                <span className="text-xs text-gray-400 font-medium">
+                                Created: {new Date(notepad.createdAt).toLocaleDateString()}
+                                </span>
+                                <span className="text-xs text-gray-400 font-medium">
+                                Last updated: {new Date(notepad.updatedAt).toLocaleDateString()}
+                                </span>
+                            </div>
                         </div>
-                    ))}
-                    
+                    )): (
+                        <div className="bg-white/80 shadow border rounded-xl p-4 text-center border-gray-200">
+                            <p className="text-gray-400">No saved notepads.</p>
+                        </div>
+                    )}
                 </div>
-                <div className="w-8/12 mx-auto  text-black p-4 rounded">
+                <div className="md:w-8/12 mx-auto text-neutral-900 p-6 rounded-xl bg-white/80 shadow border border-gray-100 min-h-[250px] flex flex-col justify-center">
                     {showNewForm ? (
                         <div>
-                            <form onSubmit={handleNewPadChange} className="flex flex-col gap-6 bg-gray-100 p-4 rounded">
-                                <input type="text" className="w-full mb-2 active:border rounded  active:border-red-200 text-xl font-semibold" placeholder="Title..." value={newPad.title} onChange={e => setNewPad({...newPad, title: e.target.value})} />
-                                <textarea className="w-full h-20 rounded active:border-red-200 active:border" placeholder="Content..." value={newPad.content} onChange={e => setNewPad({...newPad, content: e.target.value})} />
-                                <button className="bg-green-600 rounded text-white font-semibold hover:bg-green-700 transition duration-200 cursor-pointer">Create new notepad</button>
+                            <form onSubmit={handleNewPadChange} className="flex flex-col gap-6 bg-gray-50 p-6 rounded-xl w-full border border-gray-100 shadow-sm">
+                                <input type="text" className="w-full mb-2 border border-gray-200 rounded-lg px-3 py-2 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-neutral-400 bg-white/90 placeholder-gray-400" placeholder="Title..." value={newPad.title} onChange={e => setNewPad({...newPad, title: e.target.value})} />
+                                <textarea className="w-full h-24 rounded-lg border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-400 bg-white/90 placeholder-gray-400" placeholder="Content..." value={newPad.content} onChange={e => setNewPad({...newPad, content: e.target.value})} />
+                                <button className="bg-neutral-900 rounded-lg text-white font-semibold hover:bg-neutral-700 transition duration-200 cursor-pointer py-2 shadow focus:outline-none focus:ring-2 focus:ring-neutral-400">Create new notepad</button>
                             </form>
                         </div>
                     ) : selectedPad ? (
                         <div>
                         <input
-                            className="w-full mb-2"
-                            value={selectedPad.title}
-                            onChange={e => setSelectedPad({ ...selectedPad, title: e.target.value })}
-                        />
+                            className="w-full mb-2 border border-gray-200 rounded-lg px-3 py-2 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-neutral-400 bg-white/90 placeholder-gray-400" value={selectedPad.title}
+                            onChange={e => setSelectedPad({ ...selectedPad, title: e.target.value })} />
                         <textarea
-                            className="w-full"
-                            value={selectedPad.content}
-                            onChange={e => setSelectedPad({ ...selectedPad, content: e.target.value })}
-                        />
-                        {/*MIRAR COMO ACTUALIZAR PARA HACERLO MEJOR PROBABLEMENTE MIRAR NUEVA FUNCION */}
-                        <button
-                            onClick={() => {
-                            setNotePads(notePads.map(pad => pad.id === selectedPad.id ? selectedPad : pad));
-                            }}
-                            className="mt-2 bg-green-500 text-white px-4 py-2 rounded cursor-pointer hover:bg-green-600 transition duration-200">
+                            className="w-full h-32 border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-400 bg-white/90 placeholder-gray-400" value={selectedPad.content}
+                            onChange={e => setSelectedPad({ ...selectedPad, content: e.target.value })}/>
+                        <div className="flex justify-between mt-4">
+                            <button
+                            onClick={() => updateNotePad(selectedPad)} className="mt-2 bg-neutral-900 text-white px-6 py-2 rounded-lg cursor-pointer hover:bg-neutral-700 transition duration-200 shadow focus:outline-none focus:ring-2 focus:ring-neutral-400">
                             Save changes
-                        </button>
+                            </button>
+                            <button onClick={() => deleteNotePad(selectedPad.id)} className="mt-2 bg-red-500 text-white px-6 py-2 rounded-lg cursor-pointer hover:bg-red-700 transition duration-200 shadow focus:outline-none focus:ring-2 focus:ring-red-300">
+                                Delete notepad
+                            </button>
+                        </div>
                         </div>
                     ) : (
-                        <p className="text-center">Select a notepad or create a new one</p>
+                        <div className="flex flex-col text-center items-center justify-center h-full w-full">
+                            <p className="text-gray-400">Select a notepad to view or edit.</p>
+                            <p className="text-gray-400">Or create a new one.</p>
+                        </div>
                     )}
                 </div>
             </div>
-            
         </div>
     )
 }
