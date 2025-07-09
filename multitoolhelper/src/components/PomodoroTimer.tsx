@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage"
 import type { PomodoroState } from "../interfaces/PomodoroTimer";
+import { FiSettings } from "react-icons/fi";
+import { PomodoroSettings } from "./PomodoroSettings";
 
 export const PomodoroTimer = () => {
 
@@ -14,6 +16,12 @@ export const PomodoroTimer = () => {
     });
     const [timer, setTimer] = useState("");
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const [showSettings, setShowSettings] = useState(false);
+
+    useEffect(() => {
+        console.log(pomodoro);
+    }, []);
+
 
     const startTimer = () => {
         if (!pomodoro.isRunning) {
@@ -57,14 +65,18 @@ export const PomodoroTimer = () => {
     useEffect(() => {
         formatTime(pomodoro.timeLeft);
         if (pomodoro.timeLeft === 0 && pomodoro.isRunning) {
+            const audio = new Audio("/alarm.wav");
+            audio.play();
             if (pomodoro.isWorkTime) {
                 setPomodoro({
                     ...pomodoro, isWorkTime: false, isRunning: false, timeLeft: pomodoro.breakDuration
                 });
+                alert("Time for a break!");
             }else {
                 setPomodoro({
                     ...pomodoro, isWorkTime: true, isRunning: false, timeLeft: pomodoro.workDuration
                 });
+                alert("Time to work!");
             }
         }
     },[pomodoro.timeLeft, pomodoro.isRunning]);
@@ -77,80 +89,50 @@ export const PomodoroTimer = () => {
     };
 
     const changePomodoroDefault = () => {
-        if(!pomodoro.isRunning) {
         setPomodoro({
             ...pomodoro,
-            workDuration: 1500,
-            breakDuration: 300,
-            longBreakDuration: 900,
-            timeLeft: 1500,
+            workDuration: pomodoro.workDuration,
+            breakDuration: pomodoro.breakDuration,
+            longBreakDuration: pomodoro.longBreakDuration,
+            timeLeft: pomodoro.workDuration,
             isWorkTime: true,
             isRunning: false
-        });}
-        else{
-            setPomodoro({
-                ...pomodoro,
-                workDuration: 1500,
-                breakDuration: 300,
-                longBreakDuration: 900,
-                timeLeft: pomodoro.workDuration,
-                isWorkTime: true,
-                isRunning: false,
-            })
-        }
+        })
     }
 
     const changeShortBreakDefault = () => {
-        if(!pomodoro.isRunning) {
         setPomodoro({
             ...pomodoro,
-            workDuration: 1500,
-            breakDuration: 300,
-            longBreakDuration: 900,
-            timeLeft: 300,
+            workDuration: pomodoro.workDuration,
+            breakDuration: pomodoro.breakDuration,
+            longBreakDuration: pomodoro.longBreakDuration,
+            timeLeft: pomodoro.breakDuration,
             isWorkTime: false,
             isRunning: false
-        });}
-        else{
-            setPomodoro({
-                ...pomodoro,
-                workDuration: 1500,
-                breakDuration: 300,
-                longBreakDuration: 900,
-                timeLeft: pomodoro.breakDuration,
-                isWorkTime: false,
-                isRunning: false,
-            })
-        }
+        });
     }
 
     const changeLongBreakDefault = () => {
-        if(!pomodoro.isRunning) {
         setPomodoro({
             ...pomodoro,
-            workDuration: 1500,
-            breakDuration: 300,
-            longBreakDuration: 900,
-            timeLeft: 900,
+            workDuration: pomodoro.workDuration,
+            breakDuration: pomodoro.breakDuration,
+            longBreakDuration: pomodoro.longBreakDuration,
+            timeLeft: pomodoro.longBreakDuration,
             isWorkTime: false,
             isRunning: false
-        });}
-        else{
-            setPomodoro({
-                ...pomodoro,
-                workDuration: 1500,
-                breakDuration: 300,
-                longBreakDuration: 900,
-                timeLeft: pomodoro.longBreakDuration,
-                isWorkTime: false,
-                isRunning: false,
-            })
-        }
+        });
     }
 
     return (
-        <div className="max-w-md mx-auto p-8 bg-white/90 rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center justify-center gap-8 min-h-[400px]">
-            <h1 className="text-3xl font-bold text-neutral-900 mb-2 tracking-tight">Pomodoro Timer</h1>
+        <div className="max-w-xl relative mx-auto p-8 bg-white/90 rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center justify-center gap-8 min-h-[400px]">            
+                <h1 className="text-3xl font-bold text-neutral-900 mb-2 tracking-tight">Pomodoro Timer</h1>
+                <button onClick={() => setShowSettings(true)} 
+                className="absolute top-10 right-10 text-gray-400 hover:text-neutral-900 transition text-2xl">
+                 <FiSettings />
+                </button>
+           
+            
             <div className="flex flex-col items-center gap-4 w-full">
                 <div className="w-48 h-48 rounded-full bg-gradient-to-br from-red-200 via-blue-100 to-purple-300 flex items-center justify-center shadow-inner border-4 border-white/60 mb-2">
                     <span className="text-5xl font-mono text-neutral-900 select-none">{timer}</span>
@@ -166,6 +148,13 @@ export const PomodoroTimer = () => {
                 <button onClick={changeShortBreakDefault} className="cursor-pointer bg-yellow-100 text-yellow-700 px-4 py-1 rounded-lg font-medium hover:bg-yellow-200 transition">Short Break</button>
                 <button onClick={changeLongBreakDefault} className="cursor-pointer bg-pink-100 text-pink-700 px-4 py-1 rounded-lg font-medium hover:bg-pink-200 transition">Long Break</button>
             </div>
+
+            {showSettings && (
+                <div className="modal-overlay bg-gray-900/50 fixed inset-0 flex items-center justify-center z-50">
+                    <PomodoroSettings pomodoro={pomodoro} setPomodoro={setPomodoro} onClose={() => setShowSettings(false)} />
+                    
+                </div>
+            )}
         </div>
     )
 }
