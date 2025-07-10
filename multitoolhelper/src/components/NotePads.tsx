@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage"
-import type { Notepad } from "../interfaces/Notepad"
+import type { NotepadLabel, Notepad } from "../interfaces/Notepad";
 
 export const NotePads = () => {
 
     const [notePads, setNotePads] = useLocalStorage<Notepad[]>("notepads", []);
+    const [userLabels, setUserLabels] = useLocalStorage<NotepadLabel[]>("userLabels", [{ id: 0, name: "Low priority",color:"green"}, { id: 1, name: "Medium priority",color:"yellow"}, { id: 2, name: "High priority",color:"red"}])
     const [selectedPad, setSelectedPad] = useState<Notepad | null>(null);
 
+    const [searchNotepad, setSearchNotepad] = useState("");
+    const filteredNotePads = notePads.filter(n => n.title.toLowerCase().includes(searchNotepad.toLowerCase()));
+
     const [showNewForm, setShowNewForm] = useState(false);
-    const [newPad, setNewPad] = useState<Notepad>({ id: 0, title: "", content: "", createdAt: new Date(), updatedAt: new Date() });
+    const [newPad, setNewPad] = useState<Notepad>({ id: 0, title: "", content: "", createdAt: new Date(), updatedAt: new Date(), labels: [] });
 
     const handleNewPadChange = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -58,7 +62,15 @@ export const NotePads = () => {
             </div>
             <div className="grid grid-cols-1 w-full mb-4 mt-8 md:flex gap-4">
                 <div className="w-full md:w-4/12 mx-auto mb-4 flex flex-col gap-3 p-0">
-                    {notePads.length > 0 ? notePads.map((notepad) => (
+                <div className="w-full max-w-md mb-4 flex items-center gap-2">
+                    <input
+                        type="text"
+                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-md focus:outline-none focus:ring-2 focus:ring-neutral-400 bg-white/90 placeholder-gray-400"
+                        placeholder="Search by title..."
+                        value={searchNotepad} onChange={e => setSearchNotepad(e.target.value)}
+                    />
+                </div>
+                    {notePads.length > 0 ? filteredNotePads.map((notepad) => (
                         <div key={notepad.id}
                         className={`flex flex-col my-2 bg-white/80 shadow border rounded-xl w-full hover:shadow-lg hover:scale-[1.03] transition duration-200 cursor-pointer ease-in-out ${selectedPad?.id === notepad.id ? "border-neutral-900 scale-[1.03] shadow-2xl bg-neutral-50" : "border-gray-200"}`}
                         onClick={() => {setSelectedPad(notepad), setShowNewForm(false)}}>
