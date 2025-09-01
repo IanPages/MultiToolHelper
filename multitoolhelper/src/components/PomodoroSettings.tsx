@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import type { PomodoroState } from "../interfaces/PomodoroTimer"
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import type { PomodoroProps } from "../interfaces/PomodoroSettings";
-import { BsFillDoorClosedFill } from "react-icons/bs";
 import { FiX } from "react-icons/fi";
 
 

@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage"
-import type { NotepadLabel, Notepad } from "../interfaces/Notepad";
+import type { Notepad } from "../interfaces/Notepad";
 
 export const NotePads = () => {
 
     const [notePads, setNotePads] = useLocalStorage<Notepad[]>("notepads", []);
-    const [userLabels, setUserLabels] = useLocalStorage<NotepadLabel[]>("userLabels", [{ id: 0, name: "Low priority",color:"green"}, { id: 1, name: "Medium priority",color:"yellow"}, { id: 2, name: "High priority",color:"red"}])
     const [selectedPad, setSelectedPad] = useState<Notepad | null>(null);
 
     const [searchNotepad, setSearchNotepad] = useState("");
